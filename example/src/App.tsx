@@ -1,18 +1,26 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 
 import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-fast-fs';
+import { readDir } from 'react-native-fast-fs';
+import RNFS from 'react-native-fs';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
+  useEffect(() => {
+    // @ts-expect-error
+    // eslint-disable-next-line no-undef
+    const startTime = performance.now();
+    const files = readDir(RNFS.MainBundlePath);
+    // @ts-expect-error
+    // eslint-disable-next-line no-undef
+    const endTime = performance.now();
+    const timeDiff = endTime - startTime;
+    console.log(timeDiff + ' ms');
+    console.log(files);
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Text>Result: {'hello'}</Text>
     </View>
   );
 }

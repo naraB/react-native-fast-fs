@@ -1,22 +1,13 @@
-import { NativeModules, Platform } from 'react-native';
+type File = {
+  size: number;
+  isFile: boolean;
+  isDirectory: boolean;
+  name: string;
+  path: string;
+};
 
-const LINKING_ERROR =
-  `The package 'react-native-fast-fs' doesn't seem to be linked. Make sure: \n\n` +
-  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
-  '- You rebuilt the app after installing the package\n' +
-  '- You are not using Expo managed workflow\n';
+declare function readDirectory(a: string): File[];
 
-const FastFs = NativeModules.FastFs
-  ? NativeModules.FastFs
-  : new Proxy(
-      {},
-      {
-        get() {
-          throw new Error(LINKING_ERROR);
-        },
-      }
-    );
-
-export function multiply(a: number, b: number): Promise<number> {
-  return FastFs.multiply(a, b);
+export function readDir(a: string): File[] {
+  return readDirectory(a);
 }
