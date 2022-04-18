@@ -18,7 +18,7 @@ public:
 void install(jsi::Runtime &jsiRuntime) {
     auto readDirectory = jsi::Function::createFromHostFunction(
                                                                jsiRuntime,
-                                                               jsi::PropNameID::forAscii(jsiRuntime, "readDirectory"),
+                                                               jsi::PropNameID::forAscii(jsiRuntime, "__readDirectory"),
                                                                1,
                                                                [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
                                                                    if(!arguments[0].isString()) {
@@ -55,5 +55,5 @@ void install(jsi::Runtime &jsiRuntime) {
                                                                }
                                                                );
     
-    jsiRuntime.global().setProperty(jsiRuntime, "readDirectory", move(readDirectory));
+    jsiRuntime.global().setProperty(jsiRuntime, "__readDirectory", move(readDirectory));
 }

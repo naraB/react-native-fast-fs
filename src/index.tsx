@@ -1,4 +1,4 @@
-type File = {
+export type File = {
   size: number;
   isFile: boolean;
   isDirectory: boolean;
@@ -6,8 +6,8 @@ type File = {
   path: string;
 };
 
-declare function readDirectory(a: string): File[];
+declare function __readDirectory(a: string): File[];
 
-export function readDir(a: string): File[] {
-  return readDirectory(a);
+export function readDirectory(a: string): File[] {
+  return __readDirectory(a);
 }
