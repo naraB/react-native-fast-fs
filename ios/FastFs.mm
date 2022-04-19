@@ -1,30 +1,37 @@
 #import "FastFs.h"
 #import <React/RCTBridge+Private.h>
 #import <React/RCTUtils.h>
-#import <Foundation/Foundation.h>
+#import <jsi/jsi.h>
 #import "react-native-fast-fs.h"
 
+
+using namespace facebook;
 @implementation FastFs
 
-@synthesize bridge= _bridge;
-@synthesize methodQueue = _methodQueue;
-
 RCT_EXPORT_MODULE()
+//
+//+ (BOOL)requiresMainQueueSetup {
+//    return YES;
+//}
 
-+ (BOOL)requiresMainQueueSetup {
-  return YES;
-}
-
-- (void)setBridge:(RCTBridge *)bridge {
-  _bridge = bridge;
-  _setBridgeOnMainQueue = RCTIsMainQueue();
-
-  RCTCxxBridge *cxxBridge = (RCTCxxBridge *)self.bridge;
-  if (!cxxBridge.runtime) {
-    return;
-  }
-
-  install(*(facebook::jsi::Runtime *)cxxBridge.runtime);
+RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install)
+{
+    RCTBridge* bridge = [RCTBridge currentBridge];
+    
+    RCTCxxBridge *cxxBridge = (RCTCxxBridge *)bridge;
+    if (cxxBridge == nil) {
+        NSLog(@"Could not install react-native-fast-fs.");
+        return @false;
+    }
+    
+    auto jsiRuntime = (jsi::Runtime*) cxxBridge.runtime;
+    if (jsiRuntime == nil) {
+        return @false;
+    }
+    auto& runtime = *jsiRuntime;
+    install(runtime);
+    
+    return @true;
 }
 
 @end
