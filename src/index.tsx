@@ -24,15 +24,15 @@ export type File = {
 
 export function readDirectory(path: string): File[] {
   // @ts-expect-error I inject that function using JSI.
-  return global.__readDirectory(path);
+  return global.readDirectory(path);
 }
 
 export function readFile(path: string): string {
   // @ts-expect-error I inject that function using JSI.
-  return global.__readFile(path);
+  return global.readFile(path);
 }
 
 export function writeFile(path: string, content: string): boolean {
   // @ts-expect-error I inject that function using JSI.
-  return global.__writeFile(path, content);
+  return global.writeFile(path, content);
 }

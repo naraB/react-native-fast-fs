@@ -12,8 +12,8 @@ using namespace facebook;
 void install(jsi::Runtime &jsiRuntime) {
     auto readDirectory = jsi::Function::createFromHostFunction(
                                                                jsiRuntime,
-                                                               jsi::PropNameID::forAscii(jsiRuntime, "__readDirectory"),
-                                                               1,
+                                                               jsi::PropNameID::forAscii(jsiRuntime, "readDirectory"),
+                                                               1, // path
                                                                [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
                                                                    if(!arguments[0].isString()) {
                                                                        jsi::detail::throwJSError(runtime, "Path is not a string");
@@ -52,18 +52,18 @@ void install(jsi::Runtime &jsiRuntime) {
                                                                    return result;
                                                                }
                                                                );
-    jsiRuntime.global().setProperty(jsiRuntime, "__readDirectory", move(readDirectory));
+    jsiRuntime.global().setProperty(jsiRuntime, "readDirectory", move(readDirectory));
     
     auto readFile = jsi::Function::createFromHostFunction(
                                                           jsiRuntime,
-                                                          jsi::PropNameID::forAscii(jsiRuntime, "__readFile"),
-                                                          1,
+                                                          jsi::PropNameID::forAscii(jsiRuntime, "readFile"),
+                                                          1, // path
                                                           [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
                                                               if(!arguments[0].isString()) {
                                                                   jsi::detail::throwJSError(runtime, "Path is not a string");
                                                               }
                                                               
-                                                              // TODO: Add encoding
+                                                              // TODO: Add encoding arg
                                                               
                                                               string file = arguments[0].asString(runtime).utf8(runtime);
                                                               fs::path filePath = fs::path(file);
@@ -98,12 +98,12 @@ void install(jsi::Runtime &jsiRuntime) {
                                                               return jsi::Value().undefined();
                                                           }
                                                           );
-    jsiRuntime.global().setProperty(jsiRuntime, "__readFile", move(readFile));
+    jsiRuntime.global().setProperty(jsiRuntime, "readFile", move(readFile));
     
     auto writeFile = jsi::Function::createFromHostFunction(
                                                            jsiRuntime,
-                                                           jsi::PropNameID::forAscii(jsiRuntime, "__writeFile"),
-                                                           1,
+                                                           jsi::PropNameID::forAscii(jsiRuntime, "writeFile"),
+                                                           2, // path, content
                                                            [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
                                                                if(!arguments[0].isString()) {
                                                                    jsi::detail::throwJSError(runtime, "Path is not a string");
@@ -135,6 +135,6 @@ void install(jsi::Runtime &jsiRuntime) {
                                                                return jsi::Value(true);
                                                            }
                                                            );
-    jsiRuntime.global().setProperty(jsiRuntime, "__writeFile", move(writeFile));
+    jsiRuntime.global().setProperty(jsiRuntime, "writeFile", move(writeFile));
     
 }
