@@ -17,9 +17,9 @@ using namespace std;
 using namespace facebook;
 
 void installDirectoryFunctions(jsi::Runtime& rt) {
-    auto readDirectorySync = jsi::Function::createFromHostFunction(
+    auto readDir = jsi::Function::createFromHostFunction(
                                                                    rt,
-                                                                   jsi::PropNameID::forAscii(rt, "readDirectorySync"),
+                                                                   jsi::PropNameID::forAscii(rt, "readDir"),
                                                                    1, // path
                                                                    [](jsi::Runtime& rt, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
                                                                        if(!arguments[0].isString()) {
@@ -59,11 +59,11 @@ void installDirectoryFunctions(jsi::Runtime& rt) {
                                                                        return result;
                                                                    }
                                                                    );
-    rt.global().setProperty(rt, "readDirectorySync", move(readDirectorySync));
+    rt.global().setProperty(rt, "readDir", move(readDir));
     
-    auto readdirSync = jsi::Function::createFromHostFunction(
+    auto readdir = jsi::Function::createFromHostFunction(
                                                              rt,
-                                                             jsi::PropNameID::forAscii(rt, "readdirSync"),
+                                                             jsi::PropNameID::forAscii(rt, "readdir"),
                                                              1, // path
                                                              [](jsi::Runtime& rt, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
                                                                  if(!arguments[0].isString()) {
@@ -92,11 +92,11 @@ void installDirectoryFunctions(jsi::Runtime& rt) {
                                                                  return result;
                                                              }
                                                              );
-    rt.global().setProperty(rt, "readdirSync", move(readdirSync));
+    rt.global().setProperty(rt, "readdir", move(readdir));
     
-    auto mkdirSync = jsi::Function::createFromHostFunction(
+    auto mkdir = jsi::Function::createFromHostFunction(
                                                            rt,
-                                                           jsi::PropNameID::forAscii(rt, "mkdirSync"),
+                                                           jsi::PropNameID::forAscii(rt, "mkdir"),
                                                            2, // path, recursive
                                                            [](jsi::Runtime& rt, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
                                                                if(!arguments[0].isString()) {
@@ -128,7 +128,7 @@ void installDirectoryFunctions(jsi::Runtime& rt) {
                                                                return jsi::Value(status);
                                                            }
                                                            );
-    rt.global().setProperty(rt, "mkdirSync", move(mkdirSync));
+    rt.global().setProperty(rt, "mkdir", move(mkdir));
 }
 
 
