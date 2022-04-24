@@ -1,5 +1,5 @@
 #import <React/RCTBridgeModule.h>
-#import "react-native-fast-fs.h"
+#import "FastFilesystemModule.h"
 
 @interface FastFs : NSObject <RCTBridgeModule>
 

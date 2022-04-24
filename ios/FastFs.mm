@@ -2,7 +2,7 @@
 #import <React/RCTBridge+Private.h>
 #import <React/RCTUtils.h>
 #import <jsi/jsi.h>
-#import "react-native-fast-fs.h"
+#import "FastFilesystemModule.h"
 
 
 using namespace facebook;
