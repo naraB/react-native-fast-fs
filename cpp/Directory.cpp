@@ -6,10 +6,11 @@
 //
 
 #include "Directory.hpp"
-#include "filesystem.hpp"
+#include "filesystem/filesystem.hpp"
 #include "JSIUtils.hpp"
 
 #include <string>
+#include <iostream>
 
 
 namespace fs = ghc::filesystem;
@@ -41,7 +42,6 @@ void installDirectoryFunctions(jsi::Runtime& rt) {
                                                                        auto result = jsi::Array(rt, files.size());
                                                                        for (int i = 0; i < files.size(); i++)
                                                                        {
-                                                                           // TODO: Add lastModified and created
                                                                            auto file = jsi::Object(rt);
                                                                            auto name = jsi::String::createFromUtf8(rt, files[i].path().filename().string());
                                                                            auto size = jsi::Value((int)files[i].file_size());

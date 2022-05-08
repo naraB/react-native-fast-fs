@@ -25,26 +25,33 @@ export type File = {
   isDirectory: boolean;
   name: string;
   path: string;
+  lastModified: string; // TODO: Construct date object via .callFromConstructor?
+  created: string;
 };
 
-function readDirectory(path: string): File[] {
+function readDir(path: string): File[] {
   // @ts-expect-error I inject that function using JSI.
-  return global.readDirectory(path);
+  return global.readDir(path);
 }
 
-function readdirSync(path: string): string[] {
+function readdir(path: string): string[] {
   // @ts-expect-error I inject that function using JSI.
-  return global.readdirSync(path);
+  return global.readdir(path);
 }
 
-function mkdirSync(path: string, recursive: boolean = false): string[] {
+function mkdir(path: string, recursive: boolean = false): string[] {
   // @ts-expect-error I inject that function using JSI.
-  return global.mkdirSync(path, recursive);
+  return global.mkdir(path, recursive);
 }
 
-function renameSync(oldPath: string, newPath: string): void {
+function moveFile(oldPath: string, newPath: string): void {
   // @ts-expect-error I inject that function using JSI.
-  return global.renameSync(oldPath, newPath);
+  return global.moveFile(oldPath, newPath);
+}
+
+function read(path: string, start: number, end: number): string {
+  // @ts-expect-error I inject that function using JSI.
+  return global.read(path, start, end);
 }
 
 /**
@@ -86,9 +93,18 @@ function writeFileAsync(path: string, content: string): Promise<void> {
   return global.writeFileAsync(path, content);
 }
 
-function removeFile(path: string): boolean {
+function appendFile(path: string, content: string): void {
   // @ts-expect-error I inject that function using JSI.
-  return global.removeFile(path);
+  return global.appendFile(path, content);
+}
+
+function rm(path: string, recursive: boolean = false): boolean {
+  // @ts-expect-error I inject that function using JSI.
+  return global.rm(path, recursive);
+}
+function copyFile(sourcePath: string, targetPath: string): void {
+  // @ts-expect-error I inject that function using JSI.
+  return global.copyFile(sourcePath, targetPath);
 }
 
 function exists(path: string): boolean {
@@ -97,16 +113,19 @@ function exists(path: string): boolean {
 }
 
 const fs = {
-  removeFile,
-  readDirectory,
+  rm,
   readFile,
   readFileAsync,
   writeFile,
   writeFileAsync,
+  appendFile,
   exists,
-  readdirSync,
-  renameSync,
-  mkdirSync,
+  copyFile,
+  readDir,
+  readdir,
+  mkdir,
+  moveFile,
+  read,
 };
 
 export default fs;

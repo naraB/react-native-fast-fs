@@ -1,8 +1,15 @@
 #include <jni.h>
-#include "example.h"
+#include <jsi/jsi.h>
+#include "FastFilesystemModule.h"
 
-extern "C"
-JNIEXPORT jint JNICALL
-Java_com_reactnativefastfs_FastFsModule_nativeMultiply(JNIEnv *env, jclass type, jint a, jint b) {
-    return example::multiply(a, b);
+using namespace facebook;
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_reactnativefastfs_FastFsModule_nativeInstall(JNIEnv *env, jobject clazz, jlong jsiPtr, jstring path)
+{
+    auto runtime = reinterpret_cast<jsi::Runtime *>(jsiPtr);
+    if (runtime)
+    {
+        install(*runtime);
+    }
 }

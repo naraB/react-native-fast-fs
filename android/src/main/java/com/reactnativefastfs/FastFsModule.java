@@ -1,7 +1,9 @@
 package com.reactnativefastfs;
 
 import androidx.annotation.NonNull;
+import android.util.Log;
 
+import com.facebook.react.bridge.JavaScriptContextHolder;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -22,20 +24,21 @@ public class FastFsModule extends ReactContextBaseJavaModule {
         return NAME;
     }
 
-    static {
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    public boolean install() {
         try {
-            // Used to load the 'native-lib' library on application startup.
-            System.loadLibrary("cpp");
-        } catch (Exception ignored) {
+            Log.i(NAME, "Loading C++ library...");
+            System.loadLibrary("reactnativefastfs");
+
+            JavaScriptContextHolder jsContext = getReactApplicationContext().getJavaScriptContextHolder();
+            nativeInstall(jsContext.get());
+            Log.i(NAME, "Successfully installed MMKV JSI Bindings!");
+            return true;
+        } catch (Exception exception) {
+            Log.e(NAME, "Failed to install MMKV JSI Bindings!", exception);
+            return false;
         }
     }
 
-    // Example method
-    // See https://reactnative.dev/docs/native-modules-android
-    @ReactMethod
-    public void multiply(int a, int b, Promise promise) {
-        promise.resolve(nativeMultiply(a, b));
-    }
-
-    public static native int nativeMultiply(int a, int b);
+    private static native void nativeInstall(long jsiPtr);
 }

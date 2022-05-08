@@ -113,7 +113,7 @@ export default function App() {
     // const [fast, slow] = await benchmarkReadFile();
     // console.log(`fast ${fast} - slow ${slow}`);
 
-    const path = RNFS.DocumentDirectoryPath;
+    const path = RNFS.DocumentDirectoryPath + '/dir';
     // try {
     //   fs.removeFile(path);
     // } catch (error) {
@@ -128,15 +128,29 @@ export default function App() {
     //   'Read directory: ',
     //   fs.readDirectory(RNFS.DocumentDirectoryPath)
     // );
-    const fastFilesystemFile = path + '/fast-filesystem.txt';
 
-    fs.writeFile(fastFilesystemFile, '0123456789'.repeat(1000));
+    //fs.writeFile(path, 'Hello');
+    //fs.appendFile(path, ' World'.repeat(100));
+    //console.log(fs.readFile(path));
+    // console.log(fs.readdir(RNFS.DocumentDirectoryPath));
+    // fs.mkdir(path);
+    // const elements = fs.readdir(RNFS.DocumentDirectoryPath);
 
-    fs.readFileAsync(fastFilesystemFile).then((content) =>
-      console.log(content)
-    );
+    // for (const element of elements) {
+    //   fs.removeFile(RNFS.DocumentDirectoryPath + '/' + element);
+    // }
 
-    console.log('IM ASYNC');
+    fs.mkdir(RNFS.DocumentDirectoryPath + '/docs1' + '/docs2' + '/docs3', true);
+
+    console.log(fs.readdir(RNFS.DocumentDirectoryPath));
+    console.log(fs.readdir(RNFS.DocumentDirectoryPath + '/docs1'));
+    console.log(fs.readdir(RNFS.DocumentDirectoryPath + '/docs1' + '/docs2'));
+
+    console.log(fs.rm(RNFS.DocumentDirectoryPath + '/docs1', true));
+
+    console.log(fs.readdir(RNFS.DocumentDirectoryPath));
+
+    // console.log(await RNFS.read(path, 9, 0));
 
     // RNFS.writeFile(rnFilesystemFile, b64.repeat(10)).then(() =>
     //   console.log('I have written a smoll string :(')
