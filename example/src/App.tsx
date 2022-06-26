@@ -113,7 +113,6 @@ export default function App() {
     // const [fast, slow] = await benchmarkReadFile();
     // console.log(`fast ${fast} - slow ${slow}`);
 
-    const path = RNFS.DocumentDirectoryPath + '/dir';
     // try {
     //   fs.removeFile(path);
     // } catch (error) {
@@ -140,15 +139,42 @@ export default function App() {
     //   fs.removeFile(RNFS.DocumentDirectoryPath + '/' + element);
     // }
 
-    fs.mkdir(RNFS.DocumentDirectoryPath + '/docs1' + '/docs2' + '/docs3', true);
+    // fs.mkdir(RNFS.DocumentDirectoryPath + '/docs1' + '/docs2' + '/docs3', true);
 
-    console.log(fs.readdir(RNFS.DocumentDirectoryPath));
-    console.log(fs.readdir(RNFS.DocumentDirectoryPath + '/docs1'));
-    console.log(fs.readdir(RNFS.DocumentDirectoryPath + '/docs1' + '/docs2'));
+    // console.log(fs.readdir(RNFS.DocumentDirectoryPath));
+    // console.log(fs.readdir(RNFS.DocumentDirectoryPath + '/docs1'));
+    // console.log(fs.readdir(RNFS.DocumentDirectoryPath + '/docs1' + '/docs2'));
 
-    console.log(fs.rm(RNFS.DocumentDirectoryPath + '/docs1', true));
+    // const file = RNFS.DocumentDirectoryPath + 'helloWorld.txt';
 
-    console.log(fs.readdir(RNFS.DocumentDirectoryPath));
+    // fs.writeFile(file, 'Hello World');
+
+    // const content = fs.readFile(file);
+
+    // console.log(content);
+
+    try {
+      const path = '/storage/emulated/0/Android';
+
+      await RNFS.writeFile(`${path}/helloWorld`, 'hello world');
+      console.log(await RNFS.readDir(path));
+      // console.log(fs.readFile(path));
+      // const directoryContents = fs.readDir(path);
+
+      // console.log(directoryContents, 'helo');
+
+      // for (let dir of directoryContents) {
+      //   console.log(dir);
+      //   const permissions = fs.getPermissions(dir.path);
+      //   console.log(dir.name, permissions.toString(2));
+      // }
+    } catch (e) {
+      console.error(e);
+    }
+
+    // console.log(fs.rm(RNFS.DocumentDirectoryPath + '/docs1', true));
+
+    // console.log(fs.readdir(RNFS.DocumentDirectoryPath));
 
     // console.log(await RNFS.read(path, 9, 0));
 

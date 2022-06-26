@@ -49,24 +49,11 @@ void installFileFunctions(jsi::Runtime& rt) {
                                                               }
                                                               
                                                               // TODO: Throw exception if file does not have read permission
-                                                              fs::perms permissions = fs::status(filePath).permissions();
-                                                              std::string result;
-                                                              result.reserve(9);
-                                                              for (int i = 0; i < 9; ++i) {
-                                                                  result = ((static_cast<int>(permissions) & (1 << i)) ? "xwrxwrxwr"[i] : '-') + result;
+                                                              int permissions = static_cast<int>(fs::status(filePath).permissions());
+                                                              
+                                                              if (!(permissions & 256)) {
+                                                                  jsi::detail::throwJSError(runtime, "You don't have permissions to read this file.");
                                                               }
-                                                              
-                                                              //cout << result << endl;
-                                                              
-                                                              
-                                                              //cout << static_cast<int>(permissions) << endl;
-                                                              
-                                                              
-                                                              /*
-                                                               if(!fs::permissions(filePath, )) {
-                                                               jsi::detail::throwJSError(runtime, "You don't have read permissions");
-                                                               }
-                                                               */
                                                               
                                                               try {
                                                                   fs::ifstream ifs(filePath);
@@ -278,6 +265,8 @@ void installFileFunctions(jsi::Runtime& rt) {
                                                                string file = arguments[0].asString(runtime).utf8(runtime);
                                                                fs::path filePath = fs::path(file);
                                                                
+                                                               
+                                                               
                                                                /* TODO: handle
                                                                 bool fileCreationSuccess = fs::create_directory(filePath);
                                                                 if (!fileCreationSuccess) {
@@ -289,8 +278,8 @@ void installFileFunctions(jsi::Runtime& rt) {
                                                                    fs::ofstream ofs(filePath);
                                                                    ofs.write(&content[0], content.size());
                                                                    ofs.close();
-                                                               } catch (...) {
-                                                                   jsi::detail::throwJSError(runtime, "Content could not be written to file");
+                                                               } catch (fs::filesystem_error &e) {
+                                                                   jsi::detail::throwJSError(runtime, e.what());
                                                                }
                                                                
                                                                return jsi::Value().undefined();

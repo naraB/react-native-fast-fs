@@ -96,4 +96,30 @@ void install(jsi::Runtime &rt)
             return jsi::Value().undefined();
         });
     rt.global().setProperty(rt, "rm", move(rm));
+    
+    auto getPermissions = jsi::Function::createFromHostFunction(
+        rt,
+        jsi::PropNameID::forAscii(rt, "getPermissions"),
+        2, // path
+        [](jsi::Runtime &runtime, const jsi::Value &thisValue, const jsi::Value *arguments, size_t count) -> jsi::Value
+        {
+            if (!arguments[0].isString())
+            {
+                jsi::detail::throwJSError(runtime, "Argument 'path' is not a string.");
+            }
+
+            const string path = arguments[0].asString(runtime).utf8(runtime);
+            const fs::path fsPath = fs::path(path);
+
+            if (!fs::exists(fsPath))
+            {
+                jsi::detail::throwJSError(runtime, "Path is not pointing to a file or directory.");
+            }
+
+            int permissions = static_cast<int>(fs::status(fsPath).permissions());
+
+            return jsi::Value(permissions);
+        });
+    rt.global().setProperty(rt, "getPermissions", move(getPermissions));
+
 }

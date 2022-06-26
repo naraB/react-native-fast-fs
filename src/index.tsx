@@ -111,6 +111,10 @@ function exists(path: string): boolean {
   // @ts-expect-error I inject that function using JSI.
   return global.exists(path);
 }
+function getPermissions(path: string): number {
+  // @ts-expect-error I inject that function using JSI.
+  return global.getPermissions(path);
+}
 
 const fs = {
   rm,
@@ -126,6 +130,7 @@ const fs = {
   mkdir,
   moveFile,
   read,
+  getPermissions,
 };
 
 export default fs;
